@@ -11,7 +11,7 @@ intents = discord.Intents.default()
 bot = commands.Bot(command_prefix="/", intents=intents)
 
 # 読み込む Cog をリストにする
-INITIAL_EXTENSIONS = ["cogs.janken"]
+INITIAL_EXTENSIONS = ["cogs.janken","cogs.admin"]
 
 @bot.event
 async def on_ready():
