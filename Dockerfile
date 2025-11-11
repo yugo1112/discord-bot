@@ -1,6 +1,15 @@
-FROM python:3.11-slim
+FROM python:3.10
+
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-COPY . .
+
+# コピー
+COPY . /app
+
+# 依存関係
+RUN pip install -r requirements.txt
+
+# Render の PORT を渡す（ダミーWebサーバーに必要）
+ENV PORT=3000
+
+# Bot 起動
 CMD ["python", "bot.py"]
