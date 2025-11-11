@@ -30,3 +30,28 @@ async def main():
 if __name__ == "__main__":
     import asyncio
     asyncio.run(main())
+
+# ---- Render 対策：ダミーWebサーバー ----
+from aiohttp import web
+
+async def handle(request):
+    return web.Response(text="OK")
+
+def run_dummy_web_server():
+    app = web.Application()
+    app.router.add_get("/", handle)
+    port = int(os.environ.get("PORT", 10000))
+    web.run_app(app, port=port)
+
+# 非同期で bot と同時に動かす
+async def main():
+    # bot
+    bot_task = asyncio.create_task(client.start(TOKEN))
+
+    # dummy server
+    server_task = asyncio.to_thread(run_dummy_web_server)
+
+    await asyncio.gather(bot_task, server_task)
+
+if __name__ == "__main__":
+    asyncio.run(main())
