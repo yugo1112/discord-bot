@@ -10,25 +10,26 @@ class Achan(commands.Cog):
         self.ACHAN_DATA = [
             {
                 "file": "achan/kuruma.jpg",
-                "comment": "車高短プリウスのリアバンパー流されちゃった..."
+                "comment": "リアバンパー流されちゃった..."
             },
             
         ]
 
     @commands.hybrid_command(name="あちゃん", description="ランダムであちゃん画像を送ります")
     async def achan(self, ctx):
-        # ランダム選択
+        await ctx.defer()
+        send = ctx.followup.send
+
         data = random.choice(self.ACHAN_DATA)
-
-        comment = data["comment"]
         file_path = data["file"]
+        comment = data["comment"]
 
-        # 画像読み込み
         file = discord.File(file_path, filename="achan.jpg")
         embed = discord.Embed(description=comment)
         embed.set_image(url="attachment://achan.jpg")
 
-        await ctx.reply(embed=embed, file=file)
+        await send(embed=embed, file=file)
+
 
 async def setup(bot):
     await bot.add_cog(Achan(bot))
